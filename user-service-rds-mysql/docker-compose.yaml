@@ -1,0 +1,34 @@
+---
+services:
+  mysql:
+    image: mysql:latest
+    cap_add:
+      - SYS_NICE
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    environment:
+        MYSQL_DATABASE: "user-management"
+        MYSQL_USER: "user-management-user"
+        MYSQL_PASSWORD: "user-management-password"
+        MYSQL_ROOT_PASSWORD: "mysql-password"
+    volumes:
+      - "./src/test/resources/data:/docker-entrypoint-initdb.d/"
+    networks:
+      - user-management-network
+
+  user-service:
+    image: ssamantr/user-service-rds-mysql:1.0.0
+    depends_on:
+      - mysql
+    ports:
+      - "8095:8095"
+    environment:
+      spring.datasource.url: "jdbc:mysql://mysql:3306/user-management"
+    networks:
+      - user-management-network
+
+networks:
+  user-management-network:
