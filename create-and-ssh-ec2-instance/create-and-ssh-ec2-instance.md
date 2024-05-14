@@ -5,7 +5,7 @@
 - Click on **Instances**
 - Click on **Launch Instances**
 - Provide name for the EC2 Instance **aws-web-server**. You can choose to provide a tag for the same, which is optional.
-- Choose OS as **Amazon Linux** and **AMI** as **Amazon Linux 2023 AMI**.
+- Choose OS as **Amazon Linux** and **AMI** as **Amazon Linux 2 AMI**.
 - Choose architecture as **64-bit (x86)**
 - Now go on to create a key-pair. Click on **Create a new key pair**. 
   - Provide name as **ec2-key-pair**.
@@ -32,4 +32,29 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 #### Access the website
 ```bash
 $ curl http://<public-ip>
+```
+> Note: If the instance is not reachable and the requests are timed out, then check the inbound security group rules.
+> While choosing the AMI, choose **Amazon Linux 2 AMI** instead of **Amazon Linux 2023 AMI**. Since 2023 AMI is not reachable from http.
+
+#### SSH into EC2 Instance
+- After launching the EC2 instance, it's time to access it via SSH - Port 22.
+- Check the Security Group Inbound Rules if the traffic for Port 22 is allowed in.
+
+```bash
+# command templates to ssh into ec2 instance
+$ cd create-and-ssh-ec2-instance/
+$ chmod 0400 <key-pair-file.pem>
+$ ssh -i <key-pair-file.pem> ec2-user@<public-ipv4-of-the-instance>
+
+# actual commands
+$ chmod 0400 ec2-key-pair.pem
+$ ssh -i ec2-key-pair.pem ec2-user@34.236.154.15
+```
+
+- After the successful connection check the connection.
+
+```bash
+$ whoami
+$ ping google.com
+$ exit
 ```
