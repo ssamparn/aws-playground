@@ -4,7 +4,6 @@ $ docker compose -f user-service-rds-mysql/docker-compose.yaml up mysql
 ```
 #### Build and run user-management project locally
 ```bash
-$ cd user-service-rds-mysql/
 $ mvn clean install
 $ docker compose -f user-service-rds-mysql/docker-compose.yaml up user-service
 ```
